@@ -12,22 +12,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+require("dotenv/config");
 const figlet_1 = __importDefault(require("figlet"));
 const commander_1 = require("commander");
+const download_data_1 = __importDefault(require("./scripts/download-data"));
 const program = new commander_1.Command();
-console.log(figlet_1.default.textSync('Data Migration'));
+console.log(figlet_1.default.textSync("Data Migration"));
 program
-    .version('1.0.0')
-    .description('this tools to help migrate fusionauth data')
+    .version("1.0.0")
+    .description("this tools to help migrate fusionauth data")
+    .option("-s, --setup", "to setup config value for fusion auth client")
     .option("-d, --download", "to start download data from fusionauth server to local device")
     .parse(process.argv);
 const options = program.opts();
-const executeDownload = () => __awaiter(void 0, void 0, void 0, function* () { return console.log('run download data flow'); });
 function executeCommand() {
     return __awaiter(this, void 0, void 0, function* () {
+        console.log("env ", process.env.FUSIONAUTH_BASE_URL);
         try {
             if (options.download) {
-                yield executeDownload();
+                yield (0, download_data_1.default)();
             }
         }
         catch (error) {
